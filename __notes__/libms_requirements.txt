@@ -1,0 +1,23 @@
+Library system:
+- Add new book
+- eduting book
+- deletig book- categories
+- search
+- users - login, signup
+- settings [categories, author, publisher]
+- day to day operations
+- reports [excel files]
+
+Book:
+ - title
+ - description
+ - category
+ - prie
+ - author
+ - publisher
+
+ users:
+ - User name
+ - password
+ - email address
+

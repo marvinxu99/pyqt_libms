@@ -1,0 +1,9 @@
+<RCC>
+  <qresource>
+    <file>img/daily_operations.png</file>
+    <file>img/books.png</file>
+    <file>img/settings.png</file>
+    <file>img/themes.png</file>
+    <file>img/users.png</file>
+  </qresource>
+</RCC>
