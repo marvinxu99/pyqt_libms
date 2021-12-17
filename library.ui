@@ -24,7 +24,7 @@
    <property name="styleSheet">
     <string notr="true">font: 12pt &quot;Segoe UI&quot;;</string>
    </property>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btn_daily_operations">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -50,7 +50,7 @@
      </size>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="btn_books">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -73,7 +73,7 @@
      </size>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="btn_users">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -96,7 +96,7 @@
      </size>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="btn_settings">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -119,7 +119,7 @@
      </size>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="btn_show_themes">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -142,7 +142,7 @@
      </size>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="main_tab_widget">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -154,7 +154,7 @@
     <property name="currentIndex">
      <number>2</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="tab_daily_operations">
      <attribute name="title">
       <string>Daily Operations</string>
      </attribute>
@@ -316,7 +316,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="tab_books">
      <attribute name="title">
       <string>Books</string>
      </attribute>
@@ -758,7 +758,7 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_3">
+    <widget class="QWidget" name="tab_users">
      <attribute name="title">
       <string>Users</string>
      </attribute>
@@ -938,7 +938,7 @@
         <x>360</x>
         <y>20</y>
         <width>371</width>
-        <height>441</height>
+        <height>461</height>
        </rect>
       </property>
       <property name="title">
@@ -1132,7 +1132,7 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_4">
+    <widget class="QWidget" name="tab_settings">
      <attribute name="title">
       <string>Settings</string>
      </attribute>
@@ -1140,13 +1140,13 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>40</y>
+        <y>0</y>
         <width>741</width>
         <height>491</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -1155,14 +1155,17 @@
        <widget class="QTableWidget" name="tableWidget_2">
         <property name="geometry">
          <rect>
-          <x>0</x>
-          <y>140</y>
-          <width>741</width>
-          <height>321</height>
+          <x>30</x>
+          <y>150</y>
+          <width>671</width>
+          <height>291</height>
          </rect>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>200</number>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
         </attribute>
         <column>
          <property name="text">
@@ -1237,10 +1240,10 @@
        <widget class="QTableWidget" name="tableWidget_3">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>30</x>
           <y>110</y>
-          <width>661</width>
-          <height>311</height>
+          <width>631</width>
+          <height>291</height>
          </rect>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
@@ -1296,10 +1299,10 @@
        <widget class="QTableWidget" name="tableWidget_4">
         <property name="geometry">
          <rect>
-          <x>-4</x>
-          <y>140</y>
-          <width>741</width>
-          <height>321</height>
+          <x>26</x>
+          <y>130</y>
+          <width>661</width>
+          <height>291</height>
          </rect>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
@@ -1328,13 +1331,13 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_4">
+   <widget class="QGroupBox" name="themes_box">
     <property name="geometry">
      <rect>
-      <x>829</x>
-      <y>9</y>
-      <width>151</width>
-      <height>521</height>
+      <x>809</x>
+      <y>-1</y>
+      <width>171</width>
+      <height>531</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1409,6 +1412,22 @@
      </property>
      <property name="text">
       <string>PushButton</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_hide_themes">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>203</y>
+       <width>21</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&gt;</string>
      </property>
     </widget>
    </widget>

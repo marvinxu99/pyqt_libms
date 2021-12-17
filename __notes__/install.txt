@@ -1,2 +1,5 @@
-pip install pyqt6 pyqt6-tools
-li
+(1) pip install pyqt6 pyqt6-tools
+
+
+(2) To install MySQLdb: 
+     pip install mysqlclient
