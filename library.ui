@@ -123,7 +123,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>390</y>
+      <y>450</y>
       <width>80</width>
       <height>75</height>
      </rect>
@@ -141,18 +141,27 @@
       <height>60</height>
      </size>
     </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
    </widget>
    <widget class="QTabWidget" name="main_tab_widget">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>10</y>
+      <x>150</x>
+      <y>20</y>
       <width>731</width>
       <height>521</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab_daily_operations">
      <attribute name="title">
@@ -161,9 +170,9 @@
      <widget class="QTableWidget" name="tableWidget">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>140</y>
-        <width>700</width>
+        <x>9</x>
+        <y>130</y>
+        <width>691</width>
         <height>331</height>
        </rect>
       </property>
@@ -330,13 +339,13 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="AddNewBook">
        <attribute name="title">
         <string>Add New Book</string>
        </attribute>
-       <widget class="QLineEdit" name="lineEdit_2">
+       <widget class="QLineEdit" name="new_book_title">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -346,17 +355,17 @@
          </rect>
         </property>
        </widget>
-       <widget class="QPlainTextEdit" name="plainTextEdit">
+       <widget class="QPlainTextEdit" name="new_book_description">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>50</x>
           <y>90</y>
-          <width>261</width>
-          <height>211</height>
+          <width>221</width>
+          <height>181</height>
          </rect>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_4">
+       <widget class="QLineEdit" name="new_book_code">
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -366,7 +375,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox_3">
+       <widget class="QComboBox" name="new_book_category">
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -376,7 +385,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox_4">
+       <widget class="QComboBox" name="new_book_author">
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -386,7 +395,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox_5">
+       <widget class="QComboBox" name="new_book_publisher">
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -396,7 +405,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_5">
+       <widget class="QLineEdit" name="new_book_price">
         <property name="geometry">
          <rect>
           <x>440</x>
@@ -406,7 +415,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_7">
+       <widget class="QPushButton" name="btn_add_new_book">
         <property name="geometry">
          <rect>
           <x>280</x>
@@ -572,10 +581,10 @@
        <widget class="QPlainTextEdit" name="plainTextEdit_4">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>20</x>
           <y>140</y>
-          <width>261</width>
-          <height>201</height>
+          <width>241</width>
+          <height>151</height>
          </rect>
         </property>
        </widget>
@@ -1146,7 +1155,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -1156,9 +1165,9 @@
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>150</y>
-          <width>671</width>
-          <height>291</height>
+          <y>160</y>
+          <width>581</width>
+          <height>231</height>
          </rect>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
@@ -1186,7 +1195,7 @@
          <string>New Category Name</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_16">
+       <widget class="QPushButton" name="btn_add_category">
         <property name="geometry">
          <rect>
           <x>514</x>
@@ -1199,7 +1208,7 @@
          <string>Add Category</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_27">
+       <widget class="QLineEdit" name="new_category_name">
         <property name="geometry">
          <rect>
           <x>190</x>
@@ -1227,7 +1236,7 @@
          <string>New Author Name</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_28">
+       <widget class="QLineEdit" name="new_author_name">
         <property name="geometry">
          <rect>
           <x>196</x>
@@ -1241,9 +1250,9 @@
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>110</y>
-          <width>631</width>
-          <height>291</height>
+          <y>120</y>
+          <width>581</width>
+          <height>251</height>
          </rect>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
@@ -1255,7 +1264,7 @@
          </property>
         </column>
        </widget>
-       <widget class="QPushButton" name="pushButton_17">
+       <widget class="QPushButton" name="btn_add_author">
         <property name="geometry">
          <rect>
           <x>520</x>
@@ -1286,7 +1295,7 @@
          <string>New Publisher Name</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_29">
+       <widget class="QLineEdit" name="new_publisher_name">
         <property name="geometry">
          <rect>
           <x>186</x>
@@ -1299,10 +1308,10 @@
        <widget class="QTableWidget" name="tableWidget_4">
         <property name="geometry">
          <rect>
-          <x>26</x>
-          <y>130</y>
-          <width>661</width>
-          <height>291</height>
+          <x>30</x>
+          <y>140</y>
+          <width>581</width>
+          <height>231</height>
          </rect>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
@@ -1314,7 +1323,7 @@
          </property>
         </column>
        </widget>
-       <widget class="QPushButton" name="pushButton_18">
+       <widget class="QPushButton" name="btn_add_publisher">
         <property name="geometry">
          <rect>
           <x>510</x>
