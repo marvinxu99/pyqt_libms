@@ -91,6 +91,9 @@ class MainApp(QMainWindow):
 
     def open_books_tab(self):
         self.main_tab_widget.setCurrentIndex(1)
+        self.get_categories_combobox()
+        self.get_authors_combobox()
+        self.get_publishers_combobox
 
     def open_users_tab(self):
         self.main_tab_widget.setCurrentIndex(2)
@@ -232,6 +235,36 @@ class MainApp(QMainWindow):
                 self.table_publishers.insertRow(row_pos)
                 for column, item in enumerate(items):
                     self.table_publishers.setItem(row, column, QTableWidgetItem(str(item)))
+
+    ###############################################
+    ## Show settings in UI
+    ###############################################
+    def get_categories_combobox(self):
+        db_conn = MySQLdb.connect(**self._DB)
+        cur = db_conn.cursor()
+
+        cur.execute("SELECT name FROM category")
+        data = cur.fetchall()
+        db_conn.close()
+
+        for category in data:
+            self.new_book_category.addItem(category[0])
+
+    def get_authors_combobox(self):
+        db_conn = MySQLdb.connect(**self._DB)
+        cur = db_conn.cursor()
+
+        cur.execute("SELECT name FROM author")
+        data = cur.fetchall()
+        db_conn.close()
+
+    def get_publishers_combobox(self):
+        db_conn = MySQLdb.connect(**self._DB)
+        cur = db_conn.cursor()
+
+        cur.execute("SELECT name FROM publisher")
+        data = cur.fetchall()
+        db_conn.close()
 
 
 def app_main():

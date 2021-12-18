@@ -161,7 +161,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_daily_operations">
      <attribute name="title">
@@ -384,6 +384,9 @@
           <height>31</height>
          </rect>
         </property>
+        <property name="placeholderText">
+         <string>Select a category</string>
+        </property>
        </widget>
        <widget class="QComboBox" name="new_book_author">
         <property name="geometry">
@@ -394,6 +397,9 @@
           <height>31</height>
          </rect>
         </property>
+        <property name="placeholderText">
+         <string>Select an author</string>
+        </property>
        </widget>
        <widget class="QComboBox" name="new_book_publisher">
         <property name="geometry">
@@ -403,6 +409,9 @@
           <width>221</width>
           <height>31</height>
          </rect>
+        </property>
+        <property name="placeholderText">
+         <string>Select a publisher</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="new_book_price">
