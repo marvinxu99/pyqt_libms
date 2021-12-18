@@ -91,9 +91,7 @@ class MainApp(QMainWindow):
 
     def open_books_tab(self):
         self.main_tab_widget.setCurrentIndex(1)
-        self.get_categories_combobox()
-        self.get_authors_combobox()
-        self.get_publishers_combobox
+        self.get_items_book_combobox()
 
     def open_users_tab(self):
         self.main_tab_widget.setCurrentIndex(2)
@@ -109,7 +107,8 @@ class MainApp(QMainWindow):
     ## Books
     ###############################################
     def add_new_book(self):
-
+        db_conn = MySQLdb.connect(**self._DB)
+        cur = db_conn.cursor()
 
         title       = self.new_book_title.text()
         description = self.new_book_description.toPlainText()
@@ -239,31 +238,31 @@ class MainApp(QMainWindow):
     ###############################################
     ## Show settings in UI
     ###############################################
-    def get_categories_combobox(self):
+    def get_items_book_combobox(self):
         db_conn = MySQLdb.connect(**self._DB)
         cur = db_conn.cursor()
 
+        # Categories
         cur.execute("SELECT name FROM category")
         data = cur.fetchall()
-        db_conn.close()
-
+        self.new_book_category.clear()
         for category in data:
             self.new_book_category.addItem(category[0])
 
-    def get_authors_combobox(self):
-        db_conn = MySQLdb.connect(**self._DB)
-        cur = db_conn.cursor()
-
+        # Authors
         cur.execute("SELECT name FROM author")
         data = cur.fetchall()
-        db_conn.close()
+        self.new_book_author.clear()
+        for author in data:
+            self.new_book_author.addItem(author[0])
 
-    def get_publishers_combobox(self):
-        db_conn = MySQLdb.connect(**self._DB)
-        cur = db_conn.cursor()
-
+        # Publishers
         cur.execute("SELECT name FROM publisher")
         data = cur.fetchall()
+        self.new_book_publisher.clear()
+        for publisher in data:
+            self.new_book_publisher.addItem(publisher[0])
+
         db_conn.close()
 
 
