@@ -24,6 +24,18 @@ class MainApp(QMainWindow):
         self.show_themes(False)
         self.main_tab_widget.tabBar().setVisible(False)
 
+        tbl_header_style = "::section { background-color: #efeeea; }"
+        self.table_categories.horizontalHeader().setStyleSheet(tbl_header_style)
+        self.table_authors.horizontalHeader().setStyleSheet(tbl_header_style)
+        self.table_publishers.horizontalHeader().setStyleSheet(tbl_header_style)
+
+        self.table_categories.verticalHeader().setVisible(True)
+        self.table_categories.verticalHeader().setStyleSheet(tbl_header_style)
+        self.table_authors.verticalHeader().setVisible(True)
+        self.table_authors.verticalHeader().setStyleSheet(tbl_header_style)
+        self.table_publishers.verticalHeader().setVisible(True)
+        self.table_publishers.verticalHeader().setStyleSheet(tbl_header_style)
+
     def handle_buttons(self):
 
         # Main tabs
@@ -43,7 +55,6 @@ class MainApp(QMainWindow):
         self.btn_add_category.clicked.connect(self.add_category)
         self.btn_add_author.clicked.connect(self.add_author)
         self.btn_add_publisher.clicked.connect(self.add_publisher)
-
 
     def read_db_config(self, filename='.env', section='mysql'):
         """ Read database configuration file and return a dictionary object
@@ -86,6 +97,9 @@ class MainApp(QMainWindow):
 
     def open_settings_tab(self):
         self.main_tab_widget.setCurrentIndex(3)
+        self.display_categories()
+        self.display_authors()
+        self.display_publishers()
 
 
     ###############################################
@@ -141,14 +155,28 @@ class MainApp(QMainWindow):
         db_conn.commit()
         db_conn.close()
 
+        self.new_category_name.setText('')
+        self.display_categories()
         self.statusBar().showMessage(f"New categoty: {category_name} added.")
 
     def display_categories(self):
-        db_conn = MySQLdb.connect(host='localhost', user='winter', password="winter", db='library')
+        db_conn = MySQLdb.connect(**self._DB)
         cur = db_conn.cursor()
 
+        cur.execute("SELECT name FROM category")
+        data = cur.fetchall()
+        db_conn.close()
+
+        if data:
+            self.table_categories.setRowCount(0)   # Clear up the table
+            for row, items in enumerate(data):
+                row_pos = self.table_categories.rowCount()
+                self.table_categories.insertRow(row_pos)
+                for column, item in enumerate(items):
+                    self.table_categories.setItem(row, column, QTableWidgetItem(str(item)))
+
     def add_author(self):
-        db_conn = MySQLdb.connect(host='localhost', user='winter', password="winter", db='library')
+        db_conn = MySQLdb.connect(**self._DB)
         cur = db_conn.cursor()
 
         author_name = self.new_author_name.text()
@@ -156,13 +184,28 @@ class MainApp(QMainWindow):
         db_conn.commit()
         db_conn.close()
         
+        self.new_author_name.setText('')
+        self.display_authors()
         self.statusBar().showMessage(f"New author: {author_name} added.")
 
     def display_authors(self):
-        pass
+        db_conn = MySQLdb.connect(**self._DB)
+        cur = db_conn.cursor()
+
+        cur.execute("SELECT name FROM author")
+        data = cur.fetchall()
+        db_conn.close()
+
+        if data:
+            self.table_authors.setRowCount(0)   # Clear up the table
+            for row, items in enumerate(data):
+                row_pos = self.table_authors.rowCount()
+                self.table_authors.insertRow(row_pos)
+                for column, item in enumerate(items):
+                    self.table_authors.setItem(row, column, QTableWidgetItem(str(item)))
 
     def add_publisher(self):
-        db_conn = MySQLdb.connect(host='localhost', user='winter', password="winter", db='library')
+        db_conn = MySQLdb.connect(**self._DB)
         cur = db_conn.cursor()
 
         publisher_name = self.new_publisher_name.text()
@@ -170,10 +213,25 @@ class MainApp(QMainWindow):
         db_conn.commit()
         db_conn.close()
         
+        self.new_publisher_name.setText('')
+        self.display_publishers()
         self.statusBar().showMessage(f"New publisher: {publisher_name} added.")
 
     def display_publishers(self):
-        pass
+        db_conn = MySQLdb.connect(**self._DB)
+        cur = db_conn.cursor()
+
+        cur.execute("SELECT name FROM publisher")
+        data = cur.fetchall()
+        db_conn.close()
+
+        if data:
+            self.table_publishers.setRowCount(0)   # Clear up the table
+            for row, items in enumerate(data):
+                row_pos = self.table_publishers.rowCount()
+                self.table_publishers.insertRow(row_pos)
+                for column, item in enumerate(items):
+                    self.table_publishers.setItem(row, column, QTableWidgetItem(str(item)))
 
 
 def app_main():
