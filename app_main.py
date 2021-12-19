@@ -107,16 +107,32 @@ class MainApp(QMainWindow):
     ## Books
     ###############################################
     def add_new_book(self):
-        db_conn = MySQLdb.connect(**self._DB)
-        cur = db_conn.cursor()
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
 
-        title       = self.new_book_title.text()
-        description = self.new_book_description.toPlainText()
-        code        = self.new_book_code.text()
-        category    = self.new_book_category.currentText()
-        author      = self.new_book_author.currentText()
-        publisher   = self.new_book_publisher.currentText()
-        price       = self.new_book_price.text()
+            title       = self.new_book_title.text()
+            description = self.new_book_description.toPlainText()
+            code        = self.new_book_code.text()
+            category    = self.new_book_category.currentIndex()
+            author      = self.new_book_author.currentIndex()
+            publisher   = self.new_book_publisher.currentIndex()
+            price       = self.new_book_price.text()
+
+            cur.execute("""
+                INSERT INTO BOOK (name, description, code, category_id, author_id, publisher_id, price)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """, (title, description, code, category, author, publisher, price))
+            db_conn.commit()
+
+            self.statusBar().showMessage("New book added.")
+
+            self.new_book_title.setText('')
+            self.new_book_description.setText('')
+            self.new_book_code.setText('')
+            self.new_book_category.setCurrentIndex(-1)
+            self.new_book_author.setCurrentIndex(-1)
+            self.new_book_publisher.setCurrentIndex(-1)
+            self.new_book_price.setText('')
 
 
     def search_book(self):
@@ -207,63 +223,59 @@ class MainApp(QMainWindow):
                     self.table_authors.setItem(row, column, QTableWidgetItem(str(item)))
 
     def add_publisher(self):
-        db_conn = MySQLdb.connect(**self._DB)
-        cur = db_conn.cursor()
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
 
-        publisher_name = self.new_publisher_name.text()
-        cur.execute("INSERT INTO publisher (name) VALUES (%s)", (publisher_name,))
-        db_conn.commit()
-        db_conn.close()
-        
-        self.new_publisher_name.setText('')
-        self.display_publishers()
-        self.statusBar().showMessage(f"New publisher: {publisher_name} added.")
+            publisher_name = self.new_publisher_name.text()
+            cur.execute("INSERT INTO publisher (name) VALUES (%s)", (publisher_name,))
+            db_conn.commit()
+            
+            self.new_publisher_name.setText('')
+            self.display_publishers()
+            self.statusBar().showMessage(f"New publisher: {publisher_name} added.")
 
     def display_publishers(self):
-        db_conn = MySQLdb.connect(**self._DB)
-        cur = db_conn.cursor()
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
 
-        cur.execute("SELECT name FROM publisher")
-        data = cur.fetchall()
-        db_conn.close()
+            cur.execute("SELECT name FROM publisher")
+            data = cur.fetchall()
 
-        if data:
-            self.table_publishers.setRowCount(0)   # Clear up the table
-            for row, items in enumerate(data):
-                row_pos = self.table_publishers.rowCount()
-                self.table_publishers.insertRow(row_pos)
-                for column, item in enumerate(items):
-                    self.table_publishers.setItem(row, column, QTableWidgetItem(str(item)))
+            if data:
+                self.table_publishers.setRowCount(0)   # Clear up the table
+                for row, items in enumerate(data):
+                    row_pos = self.table_publishers.rowCount()
+                    self.table_publishers.insertRow(row_pos)
+                    for column, item in enumerate(items):
+                        self.table_publishers.setItem(row, column, QTableWidgetItem(str(item)))
 
     ###############################################
     ## Show settings in UI
     ###############################################
     def get_items_book_combobox(self):
-        db_conn = MySQLdb.connect(**self._DB)
-        cur = db_conn.cursor()
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
 
-        # Categories
-        cur.execute("SELECT name FROM category")
-        data = cur.fetchall()
-        self.new_book_category.clear()
-        for category in data:
-            self.new_book_category.addItem(category[0])
+            # Categories
+            cur.execute("SELECT name FROM category")
+            data = cur.fetchall()
+            self.new_book_category.clear()
+            for category in data:
+                self.new_book_category.addItem(category[0])
 
-        # Authors
-        cur.execute("SELECT name FROM author")
-        data = cur.fetchall()
-        self.new_book_author.clear()
-        for author in data:
-            self.new_book_author.addItem(author[0])
+            # Authors
+            cur.execute("SELECT name FROM author")
+            data = cur.fetchall()
+            self.new_book_author.clear()
+            for author in data:
+                self.new_book_author.addItem(author[0])
 
-        # Publishers
-        cur.execute("SELECT name FROM publisher")
-        data = cur.fetchall()
-        self.new_book_publisher.clear()
-        for publisher in data:
-            self.new_book_publisher.addItem(publisher[0])
-
-        db_conn.close()
+            # Publishers
+            cur.execute("SELECT name FROM publisher")
+            data = cur.fetchall()
+            self.new_book_publisher.clear()
+            for publisher in data:
+                self.new_book_publisher.addItem(publisher[0])
 
 
 def app_main():

@@ -355,16 +355,6 @@
          </rect>
         </property>
        </widget>
-       <widget class="QPlainTextEdit" name="new_book_description">
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>90</y>
-          <width>221</width>
-          <height>181</height>
-         </rect>
-        </property>
-       </widget>
        <widget class="QLineEdit" name="new_book_code">
         <property name="geometry">
          <rect>
@@ -530,6 +520,29 @@
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
+       <widget class="QTextEdit" name="new_book_description">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>260</width>
+          <height>180</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>91</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Description</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_6">
        <attribute name="title">
@@ -567,7 +580,7 @@
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_11">
+       <widget class="QLineEdit" name="edit_book_code">
         <property name="geometry">
          <rect>
           <x>430</x>
@@ -577,7 +590,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox_12">
+       <widget class="QComboBox" name="edit_book_publishers">
         <property name="geometry">
          <rect>
           <x>430</x>
@@ -587,17 +600,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QPlainTextEdit" name="plainTextEdit_4">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>140</y>
-          <width>241</width>
-          <height>151</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_12">
+       <widget class="QLineEdit" name="edit_book_title">
         <property name="geometry">
          <rect>
           <x>90</x>
@@ -639,7 +642,7 @@
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox_13">
+       <widget class="QComboBox" name="edit_book_authors">
         <property name="geometry">
          <rect>
           <x>430</x>
@@ -678,7 +681,7 @@
          <string>Book Title</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_13">
+       <widget class="QLineEdit" name="edit_book_price">
         <property name="geometry">
          <rect>
           <x>430</x>
@@ -688,7 +691,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox_14">
+       <widget class="QComboBox" name="edit_book_categories">
         <property name="geometry">
          <rect>
           <x>430</x>
@@ -771,6 +774,16 @@
         </property>
         <property name="text">
          <string>Delete</string>
+        </property>
+       </widget>
+       <widget class="QTextEdit" name="edit_book_description">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>150</y>
+          <width>241</width>
+          <height>181</height>
+         </rect>
         </property>
        </widget>
       </widget>
@@ -1164,7 +1177,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
