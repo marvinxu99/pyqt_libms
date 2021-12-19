@@ -145,8 +145,7 @@ class MainApp(QMainWindow):
 
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
-            # sql = """SELECT * FROM book WHERE name = 'space travel 1' """
-            sql = "SELECT * FROM book where name= %s"
+            sql = "SELECT name, description, code, category_id, author_id, publisher_id, price FROM book where name= %s"
             cur.execute(sql, [(book_title)])
             data = cur.fetchone()
             print("found: ", data)
