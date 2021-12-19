@@ -139,10 +139,17 @@ class MainApp(QMainWindow):
             self.new_book_publisher.setCurrentIndex(-1)
             self.new_book_price.setText('')
 
-
     def search_book(self):
         book_title = self.book_title_search.text()
-        print(book_title)
+        print("Entered: ", book_title)
+
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+            # sql = """SELECT * FROM book WHERE name = 'space travel 1' """
+            sql = "SELECT * FROM book where name= %s"
+            cur.execute(sql, [(book_title)])
+            data = cur.fetchone()
+            print("found: ", data)
 
 
     def edit_book_save(self):
