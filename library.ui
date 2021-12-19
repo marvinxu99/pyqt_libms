@@ -701,7 +701,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_10">
+       <widget class="QPushButton" name="btn_edit_book_save">
         <property name="geometry">
          <rect>
           <x>330</x>
@@ -718,7 +718,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>9</y>
+          <y>19</y>
           <width>81</width>
           <height>31</height>
          </rect>
@@ -727,21 +727,21 @@
          <string>Book Title</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_14">
+       <widget class="QLineEdit" name="book_title_search">
         <property name="geometry">
          <rect>
           <x>90</x>
-          <y>10</y>
+          <y>20</y>
           <width>171</width>
           <height>31</height>
          </rect>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_11">
+       <widget class="QPushButton" name="btn_book_search">
         <property name="geometry">
          <rect>
           <x>340</x>
-          <y>10</y>
+          <y>20</y>
           <width>131</width>
           <height>31</height>
          </rect>
@@ -754,7 +754,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>60</y>
           <width>671</width>
           <height>20</height>
          </rect>
@@ -763,7 +763,7 @@
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_12">
+       <widget class="QPushButton" name="btn_edit_book_delete">
         <property name="geometry">
          <rect>
           <x>160</x>

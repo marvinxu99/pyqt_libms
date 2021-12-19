@@ -50,11 +50,16 @@ class MainApp(QMainWindow):
 
         # Books
         self.btn_add_new_book.clicked.connect(self.add_new_book)
+        self.btn_book_search.clicked.connect(self.search_book)
+        self.btn_edit_book_save.clicked.connect(self.edit_book_save)
+        self.btn_edit_book_delete.clicked.connect(self.edit_book_delete)
 
         # Settings
         self.btn_add_category.clicked.connect(self.add_category)
         self.btn_add_author.clicked.connect(self.add_author)
         self.btn_add_publisher.clicked.connect(self.add_publisher)
+
+    
 
     def read_db_config(self, filename='.env', section='mysql'):
         """ Read database configuration file and return a dictionary object
@@ -136,13 +141,14 @@ class MainApp(QMainWindow):
 
 
     def search_book(self):
+        book_title = self.book_title_search.text()
+        print(book_title)
+
+
+    def edit_book_save(self):
         pass
 
-
-    def edit_book(self):
-        pass
-
-    def delete_book(self):
+    def edit_book_delete(self):
         pass
 
 
