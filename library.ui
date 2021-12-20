@@ -1134,9 +1134,9 @@
       <widget class="QPushButton" name="btn_update_user_data">
        <property name="geometry">
         <rect>
-         <x>120</x>
+         <x>100</x>
          <y>240</y>
-         <width>141</width>
+         <width>161</width>
          <height>31</height>
         </rect>
        </property>
@@ -1599,6 +1599,18 @@
        <width>21</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>5</width>
+       <height>0</height>
+      </size>
      </property>
      <property name="text">
       <string>&gt;</string>

@@ -95,24 +95,24 @@ class MainApp(QMainWindow):
     ## Themes
     ###############################################
     def show_themes(self, show_flag=True):
+        """Display all available theme choices"""
+        self.btn_hide_themes.resize(QSize(20, 40));
         if show_flag:
             self.themes_box.show()
         else:
             self.themes_box.hide()
 
     def switch_theme(self, theme='light'):
+        """Switch to a different theme"""
         if theme == 'light':
             print('light theme')
-            app = QApplication.instance()
-            app.setStyleSheet()
-
-        elif theme == 'darkgray':
-            print('light darkgray')
-        elif theme == 'darkblue':
-            print('light darkblue')
-        elif theme == 'darkorange':
-            print('light darkorange')
-
+            self.setStyleSheet("")
+        else:
+            style_qss = f"themes/{theme}.qss"
+            print(style_qss)
+            with open(style_qss) as f_style:
+                style = f_style.read()
+                self.setStyleSheet(style)
 
     ###############################################
     ## Open Tabs
