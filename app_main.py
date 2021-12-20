@@ -49,6 +49,10 @@ class MainApp(QMainWindow):
         # Themes
         self.btn_show_themes.clicked.connect(lambda: self.show_themes(True))
         self.btn_hide_themes.clicked.connect(lambda: self.show_themes(False))
+        self.btn_theme_light.clicked.connect(lambda: self.switch_theme(theme='light'))
+        self.btn_theme_darkgray.clicked.connect(lambda: self.switch_theme(theme='darkgray'))
+        self.btn_theme_darkblue.clicked.connect(lambda: self.switch_theme(theme='darkblue'))
+        self.btn_theme_darkorange.clicked.connect(lambda: self.switch_theme(theme='darkorange'))
 
         # Books
         self.btn_add_new_book.clicked.connect(self.add_new_book)
@@ -87,11 +91,28 @@ class MainApp(QMainWindow):
 
         return db
 
+    ###############################################
+    ## Themes
+    ###############################################
     def show_themes(self, show_flag=True):
         if show_flag:
             self.themes_box.show()
         else:
             self.themes_box.hide()
+
+    def switch_theme(self, theme='light'):
+        if theme == 'light':
+            print('light theme')
+            app = QApplication.instance()
+            app.setStyleSheet()
+
+        elif theme == 'darkgray':
+            print('light darkgray')
+        elif theme == 'darkblue':
+            print('light darkblue')
+        elif theme == 'darkorange':
+            print('light darkorange')
+
 
     ###############################################
     ## Open Tabs
@@ -428,6 +449,9 @@ class MainApp(QMainWindow):
 
 def app_main():
     app = QApplication(sys.argv)
+    # Force the style to be the same on all OSs:
+    app.setStyle("Fusion")
+
     window = MainApp()
     window.show()
     app.exec()

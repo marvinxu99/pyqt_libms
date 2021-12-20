@@ -174,7 +174,7 @@
      <attribute name="title">
       <string>Daily Operations</string>
      </attribute>
-     <widget class="QTableWidget" name="tableWidget">
+     <widget class="QTableWidget" name="daily_ops_table">
       <property name="geometry">
        <rect>
         <x>9</x>
@@ -185,12 +185,17 @@
       </property>
       <column>
        <property name="text">
-        <string>Code</string>
+        <string>Tittle</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Tittle</string>
+        <string>Book Code</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>category</string>
        </property>
       </column>
       <column>
@@ -205,16 +210,11 @@
       </column>
       <column>
        <property name="text">
-        <string>New Column</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
         <string>Price</string>
        </property>
       </column>
      </widget>
-     <widget class="QPushButton" name="pushButton_6">
+     <widget class="QPushButton" name="btn_daily_ops_add">
       <property name="geometry">
        <rect>
         <x>590</x>
@@ -227,7 +227,7 @@
        <string>Add</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit">
+     <widget class="QLineEdit" name="daily_ops_book_title">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -240,7 +240,7 @@
        <string>Enter book title</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox">
+     <widget class="QComboBox" name="daily_ops_type">
       <property name="geometry">
        <rect>
         <x>320</x>
@@ -260,7 +260,7 @@
        </property>
       </item>
      </widget>
-     <widget class="QComboBox" name="comboBox_2">
+     <widget class="QComboBox" name="daily_ops_days">
       <property name="geometry">
        <rect>
         <x>480</x>
@@ -1510,7 +1510,7 @@
      <rect>
       <x>780</x>
       <y>-1</y>
-      <width>161</width>
+      <width>181</width>
       <height>551</height>
      </rect>
     </property>
@@ -1536,56 +1536,56 @@
       <string>Apply New Theme</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_19">
+    <widget class="QPushButton" name="btn_theme_light">
      <property name="geometry">
       <rect>
        <x>40</x>
        <y>90</y>
-       <width>81</width>
+       <width>101</width>
        <height>51</height>
       </rect>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>Light</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_21">
+    <widget class="QPushButton" name="btn_theme_darkgray">
      <property name="geometry">
       <rect>
        <x>40</x>
        <y>160</y>
-       <width>81</width>
+       <width>101</width>
        <height>51</height>
       </rect>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>Dark Gray</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_22">
+    <widget class="QPushButton" name="btn_theme_darkblue">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>38</x>
        <y>230</y>
-       <width>81</width>
+       <width>101</width>
        <height>51</height>
       </rect>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>Dark Blue</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_23">
+    <widget class="QPushButton" name="btn_theme_darkorange">
      <property name="geometry">
       <rect>
        <x>40</x>
        <y>300</y>
-       <width>81</width>
+       <width>101</width>
        <height>51</height>
       </rect>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>Dark Orange</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btn_hide_themes">

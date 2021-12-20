@@ -21,6 +21,9 @@ class CheckableComboBox(QComboBox):
         # palette = qApp.palette()
         # palette.setBrush(QPalette.Base, palette.button())
         # self.lineEdit().setPalette(palette)
+        # palette = QPalette()
+        # palette.setBrush(QPalette.ColorRole.Base, palette.button())
+        # self.lineEdit().setPalette(palette)
 
 
         # Use custom delegate
