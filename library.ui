@@ -156,7 +156,7 @@
      <rect>
       <x>150</x>
       <y>20</y>
-      <width>731</width>
+      <width>751</width>
       <height>521</height>
      </rect>
     </property>
@@ -1124,7 +1124,7 @@
        <rect>
         <x>360</x>
         <y>200</y>
-        <width>401</width>
+        <width>371</width>
         <height>291</height>
        </rect>
       </property>
@@ -1458,10 +1458,10 @@
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>60</y>
-        <width>431</width>
-        <height>81</height>
+        <x>60</x>
+        <y>20</y>
+        <width>411</width>
+        <height>361</height>
        </rect>
       </property>
       <property name="font">
@@ -1475,10 +1475,32 @@
        <string notr="true">font: 700 20pt &quot;Segoe UI&quot;;</string>
       </property>
       <property name="text">
-       <string>Library Manageement System</string>
+       <string/>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
+      </property>
+      <property name="pixmap">
+       <pixmap>img/library.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>390</y>
+        <width>411</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 700 18pt &quot;Segoe UI&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Library Management System v1.0</string>
       </property>
      </widget>
     </widget>
@@ -1486,10 +1508,10 @@
    <widget class="QGroupBox" name="themes_box">
     <property name="geometry">
      <rect>
-      <x>809</x>
+      <x>780</x>
       <y>-1</y>
-      <width>171</width>
-      <height>531</height>
+      <width>161</width>
+      <height>551</height>
      </rect>
     </property>
     <property name="styleSheet">

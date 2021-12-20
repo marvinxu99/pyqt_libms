@@ -112,6 +112,10 @@ class MainApp(QMainWindow):
         self.display_authors()
         self.display_publishers()
 
+    ###############################################
+    ## Dat to Day Operations
+    ###############################################
+
 
     ###############################################
     ## Books
