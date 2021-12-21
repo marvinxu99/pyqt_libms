@@ -168,7 +168,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tab_daily_operations">
      <attribute name="title">
@@ -346,7 +346,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -580,10 +580,10 @@
        <widget class="QTextEdit" name="new_book_description">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>30</x>
           <y>120</y>
-          <width>260</width>
-          <height>180</height>
+          <width>241</width>
+          <height>151</height>
          </rect>
         </property>
        </widget>
@@ -845,20 +845,20 @@
        <widget class="QTextEdit" name="edit_book_description">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>30</x>
           <y>150</y>
           <width>241</width>
           <height>181</height>
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="label_11">
+       <widget class="QLabel" name="lbl_edit_book_id">
         <property name="enabled">
          <bool>false</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>30</x>
           <y>350</y>
           <width>61</width>
           <height>16</height>
@@ -881,7 +881,7 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>80</x>
+          <x>100</x>
           <y>350</y>
           <width>113</width>
           <height>21</height>
@@ -908,7 +908,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_all_clients">
        <attribute name="title">
@@ -944,7 +944,7 @@
        <attribute name="title">
         <string>Add New Client</string>
        </attribute>
-       <widget class="QLineEdit" name="new_book_title_3">
+       <widget class="QLineEdit" name="new_client_name">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -954,7 +954,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_add_new_book_3">
+       <widget class="QPushButton" name="btn_add_new_client">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -993,7 +993,7 @@
          <string>Client Email</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="new_book_title_4">
+       <widget class="QLineEdit" name="new_client_email">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -1016,7 +1016,7 @@
          <string>Client National ID</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="new_book_title_5">
+       <widget class="QLineEdit" name="new_client_national_id">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -1031,7 +1031,7 @@
        <attribute name="title">
         <string>Edit or Delete Client</string>
        </attribute>
-       <widget class="QPushButton" name="btn_edit_book_save_3">
+       <widget class="QPushButton" name="btn_update_client">
         <property name="geometry">
          <rect>
           <x>330</x>
@@ -1041,7 +1041,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Save</string>
+         <string>Update Client</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_83">
@@ -1057,7 +1057,7 @@
          <string>Client Name</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="book_title_search_3">
+       <widget class="QLineEdit" name="client_name_search">
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -1067,7 +1067,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_book_search_3">
+       <widget class="QPushButton" name="btn_client_name_search">
         <property name="geometry">
          <rect>
           <x>340</x>
@@ -1093,10 +1093,10 @@
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_edit_book_delete_3">
+       <widget class="QPushButton" name="btn_delete_client">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>60</x>
           <y>390</y>
           <width>131</width>
           <height>31</height>
@@ -1132,7 +1132,7 @@
          <string>Client Email</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="new_book_title_9">
+       <widget class="QLineEdit" name="edit_client_email">
         <property name="geometry">
          <rect>
           <x>220</x>
@@ -1142,7 +1142,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QLineEdit" name="new_book_title_10">
+       <widget class="QLineEdit" name="edit_client_name">
         <property name="geometry">
          <rect>
           <x>220</x>
@@ -1165,7 +1165,7 @@
          <string>Client National ID</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="new_book_title_11">
+       <widget class="QLineEdit" name="edit_client_national_id">
         <property name="geometry">
          <rect>
           <x>220</x>
@@ -1173,6 +1173,48 @@
           <width>201</width>
           <height>31</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="edit_client_id">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>260</y>
+          <width>113</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maxLength">
+         <number>200</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lbl_edit_client_id">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>260</y>
+          <width>61</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Client id:</string>
         </property>
        </widget>
       </widget>

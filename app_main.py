@@ -39,6 +39,13 @@ class MainApp(QMainWindow):
         self.table_publishers.verticalHeader().setVisible(True)
         # self.table_publishers.verticalHeader().setStyleSheet(tbl_header_style)
 
+        # Hide the following fields
+        self.lbl_edit_book_id.setVisible(False)
+        self.edit_book_id.setVisible(False)
+        self.lbl_edit_client_id.setVisible(False)
+        self.edit_client_id.setVisible(False)
+
+
     def handle_buttons(self):
 
         # Main tabs
@@ -48,13 +55,8 @@ class MainApp(QMainWindow):
         self.btn_users.clicked.connect(self.open_users_tab)
         self.btn_settings.clicked.connect(self.open_settings_tab)
 
-        # Themes
-        self.btn_show_themes.clicked.connect(lambda: self.show_themes(True))
-        self.btn_hide_themes.clicked.connect(lambda: self.show_themes(False))
-        self.btn_theme_light.clicked.connect(lambda: self.set_theme(theme='light'))
-        self.btn_theme_darkgray.clicked.connect(lambda: self.set_theme(theme='darkgray'))
-        self.btn_theme_darkblue.clicked.connect(lambda: self.set_theme(theme='darkblue'))
-        self.btn_theme_darkorange.clicked.connect(lambda: self.set_theme(theme='darkorange'))
+        # Day to day operations
+
 
         # Books
         self.btn_add_new_book.clicked.connect(self.add_new_book)
@@ -62,15 +64,29 @@ class MainApp(QMainWindow):
         self.btn_edit_book_save.clicked.connect(self.edit_book_save)
         self.btn_edit_book_delete.clicked.connect(self.edit_book_delete)
 
-        # Settings
-        self.btn_add_category.clicked.connect(self.add_category)
-        self.btn_add_author.clicked.connect(self.add_author)
-        self.btn_add_publisher.clicked.connect(self.add_publisher)
+        # Clients
+        self.btn_add_new_client.clicked.connect(self.add_new_client)
+        self.btn_client_name_search.clicked.connect(self.search_client_name)
+        self.btn_update_client.clicked.connect(self.update_client)
+        self.btn_delete_client.clicked.connect(self.delete_client)
 
         # Users
         self.btn_add_user.clicked.connect(self.add_new_user)
         self.btn_user_login.clicked.connect(self.user_login)
         self.btn_update_user_data.clicked.connect(self.update_user_data)
+
+        # Settings
+        self.btn_add_category.clicked.connect(self.add_category)
+        self.btn_add_author.clicked.connect(self.add_author)
+        self.btn_add_publisher.clicked.connect(self.add_publisher)
+
+        # Themes
+        self.btn_show_themes.clicked.connect(lambda: self.show_themes(True))
+        self.btn_hide_themes.clicked.connect(lambda: self.show_themes(False))
+        self.btn_theme_light.clicked.connect(lambda: self.set_theme(theme='light'))
+        self.btn_theme_darkgray.clicked.connect(lambda: self.set_theme(theme='darkgray'))
+        self.btn_theme_darkblue.clicked.connect(lambda: self.set_theme(theme='darkblue'))
+        self.btn_theme_darkorange.clicked.connect(lambda: self.set_theme(theme='darkorange'))
 
     def read_db_config(self, filename='.env', section='mysql'):
         """ Read database configuration file and return a dictionary object
@@ -140,7 +156,7 @@ class MainApp(QMainWindow):
             price       = self.new_book_price.text()
 
             cur.execute("""
-                INSERT INTO BOOK (name, description, code, category_id, author_id, publisher_id, price)
+                INSERT INTO book (name, description, code, category_id, author_id, publisher_id, price)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
             """, (title, description, code, category, author, publisher, price))
             db_conn.commit()
@@ -232,10 +248,91 @@ class MainApp(QMainWindow):
                 self.edit_book_price.setText('')
                 self.edit_book_id.setText('')             # Book id
                 self.book_title_search.setText('')
-
                 self.statusBar().showMessage(f"Book deleted.")
         else:
             self.statusBar().showMessage(f"Deleting book aborted")
+
+    ###############################################
+    ## Clients
+    ###############################################
+    def add_new_client(self):
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+
+            name        = self.new_client_name.text()
+            email       = self.new_client_email.text()
+            natuonal_id = self.new_client_national_id.text()
+
+            cur.execute("INSERT INTO client (name, email, national_id) VALUES (%s, %s, %s)", (name, email, natuonal_id))
+            db_conn.commit()
+
+            self.new_client_name.setText('')
+            self.new_client_email.setText('')
+            self.new_client_national_id.setText('')
+            self.statusBar().showMessage("New client added.")
+
+    def search_client_name(self):
+        client_name = self.client_name_search.text()
+
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+            sql = "SELECT client_id, name, email, national_id FROM client where name= %s"
+            cur.execute(sql, [(client_name)])
+            data = cur.fetchone()
+            # print("found: ", data)
+            if data:
+                self.edit_client_name.setText(data[1])
+                self.edit_client_email.setText(data[2])
+                self.edit_client_national_id.setText(data[3])
+                self.edit_client_id.setText(str(data[0]))             # Client id
+                self.statusBar().showMessage(f"Client found.")
+            else:
+                self.statusBar().showMessage(f"Client NOT found.")
+
+    def update_client(self):
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+
+            name = self.edit_client_name.text()
+            email = self.edit_client_email.text()
+            national_id = self.edit_client_national_id.text()
+            client_id = self.edit_client_id.text()
+
+            sql = "UPDATE client SET name=%s, email=%s, national_id=%s WHERE client_id=%s"
+            cur.execute(sql, (name, email, national_id, client_id))
+            db_conn.commit()
+
+            self.edit_client_name.setText('')
+            self.edit_client_email.setText('')
+            self.edit_client_national_id.setText('')
+            self.edit_book_id.setText('')             # Client id
+            self.client_name_search.setText('')
+            self.statusBar().showMessage(f"Client updated.")
+
+    def delete_client(self):
+        warning = QMessageBox.warning(self, 
+            "Delete Client", 
+            "Deleting this client from database?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No
+        )
+        if warning == QMessageBox.StandardButton.Yes:
+            with MySQLdb.connect(**self._DB) as db_conn:
+                cur = db_conn.cursor()
+
+                book_id = self.edit_client_id.text()
+                sql = f"DELETE FROM client WHERE client_id={book_id}"
+                cur.execute(sql)
+                db_conn.commit()
+
+                self.edit_client_name.setText('')
+                self.edit_client_email.setText('')
+                self.edit_client_national_id.setText('')
+                self.edit_book_id.setText('')             # Client id
+                self.client_name_search.setText('')
+                self.statusBar().showMessage(f"Client deleted.")
+        else:
+            self.statusBar().showMessage(f"Deleting client aborted")
 
     ###############################################
     ## Users
@@ -282,7 +379,6 @@ class MainApp(QMainWindow):
                     self.statusBar().showMessage("Valid user name and password.")
                 else:
                     self.statusBar().showMessage("Invalid user name and/or password.")
-
 
     def update_user_data(self):
         print("edit user data")
