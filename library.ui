@@ -923,6 +923,15 @@
           <height>421</height>
          </rect>
         </property>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>40</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>150</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>30</number>
+        </attribute>
         <column>
          <property name="text">
           <string>Client Name</string>
@@ -1049,18 +1058,18 @@
          <rect>
           <x>10</x>
           <y>19</y>
-          <width>111</width>
+          <width>141</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Client Name</string>
+         <string>Client National ID</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="client_name_search">
+       <widget class="QLineEdit" name="client_national_id_search">
         <property name="geometry">
          <rect>
-          <x>130</x>
+          <x>160</x>
           <y>20</y>
           <width>171</width>
           <height>31</height>
@@ -1070,7 +1079,7 @@
        <widget class="QPushButton" name="btn_client_name_search">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>350</x>
           <y>20</y>
           <width>131</width>
           <height>31</height>

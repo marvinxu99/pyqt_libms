@@ -66,7 +66,7 @@ class MainApp(QMainWindow):
 
         # Clients
         self.btn_add_new_client.clicked.connect(self.add_new_client)
-        self.btn_client_name_search.clicked.connect(self.search_client_name)
+        self.btn_client_name_search.clicked.connect(self.search_client_national_id)
         self.btn_update_client.clicked.connect(self.update_client)
         self.btn_delete_client.clicked.connect(self.delete_client)
 
@@ -119,10 +119,12 @@ class MainApp(QMainWindow):
     def open_books_tab(self):
         self.main_tab_widget.setCurrentWidget(self.tab_books)
         self.get_items_book_combobox()
+        self.display_all_books()
 
     def open_clients_tab(self):
         # self.main_tab_widget.setCurrentIndex(3)
         self.main_tab_widget.setCurrentWidget(self.tab_clients)
+        self.display_all_clients()
 
     def open_users_tab(self):
         # self.main_tab_widget.setCurrentIndex(2)
@@ -143,6 +145,24 @@ class MainApp(QMainWindow):
     ###############################################
     ## Books
     ###############################################
+    def display_all_books(self):
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+            sql = """SELECT name, description, code, category_id, author_id, publisher_id, price 
+                    FROM book ORDER BY name"""
+            cur.execute(sql)
+            books = cur.fetchall()
+
+            if books:
+                self.table_all_books.setRowCount(0)   # Clear up the table
+                for row, book in enumerate(books):
+                    row_pos = self.table_all_books.rowCount()
+                    self.table_all_books.insertRow(row_pos)
+                    for column, item in enumerate(book):
+                        self.table_all_books.setItem(row, column, QTableWidgetItem(str(item)))
+            else:
+                self.statusBar().showMessage("No books found.")
+
     def add_new_book(self):
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
@@ -170,6 +190,7 @@ class MainApp(QMainWindow):
             self.new_book_author.setCurrentIndex(-1)
             self.new_book_publisher.setCurrentIndex(-1)
             self.new_book_price.setText('')
+            self.display_all_books()
 
     def search_book(self):
         book_title = self.book_title_search.text()
@@ -222,6 +243,7 @@ class MainApp(QMainWindow):
             self.edit_book_id.setText('')             # Book id
             self.book_title_search.setText('')
             self.statusBar().showMessage(f"Book updated.")
+        self.display_all_books()
 
     def edit_book_delete(self):
         warning = QMessageBox.warning(self, 
@@ -249,12 +271,31 @@ class MainApp(QMainWindow):
                 self.edit_book_id.setText('')             # Book id
                 self.book_title_search.setText('')
                 self.statusBar().showMessage(f"Book deleted.")
+            self.display_all_books()
         else:
             self.statusBar().showMessage(f"Deleting book aborted")
 
     ###############################################
     ## Clients
     ###############################################
+    def display_all_clients(self):
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+            sql = "SELECT name, email, national_id FROM client ORDER BY name"
+            cur.execute(sql)
+            clients = cur.fetchall()
+
+            if clients:
+                self.table_all_clients.setRowCount(0)   # Clear up the table
+                for row, client in enumerate(clients):
+                    row_pos = self.table_all_clients.rowCount()
+                    self.table_all_clients.insertRow(row_pos)
+                    for column, item in enumerate(client):
+                        self.table_all_clients.setItem(row, column, QTableWidgetItem(str(item)))
+            else:
+                self.statusBar().showMessage("No clients found.")
+
+
     def add_new_client(self):
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
@@ -270,14 +311,15 @@ class MainApp(QMainWindow):
             self.new_client_email.setText('')
             self.new_client_national_id.setText('')
             self.statusBar().showMessage("New client added.")
+        self.display_all_clients()
 
-    def search_client_name(self):
-        client_name = self.client_name_search.text()
+    def search_client_national_id(self):
+        client_national_id = self.client_national_id_search.text()
 
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
-            sql = "SELECT client_id, name, email, national_id FROM client where name= %s"
-            cur.execute(sql, [(client_name)])
+            sql = "SELECT client_id, name, email, national_id FROM client where national_id= %s"
+            cur.execute(sql, [(client_national_id)])
             data = cur.fetchone()
             # print("found: ", data)
             if data:
@@ -306,8 +348,9 @@ class MainApp(QMainWindow):
             self.edit_client_email.setText('')
             self.edit_client_national_id.setText('')
             self.edit_book_id.setText('')             # Client id
-            self.client_name_search.setText('')
+            self.client_national_id_search.setText('')
             self.statusBar().showMessage(f"Client updated.")
+        self.display_all_clients()
 
     def delete_client(self):
         warning = QMessageBox.warning(self, 
@@ -329,8 +372,9 @@ class MainApp(QMainWindow):
                 self.edit_client_email.setText('')
                 self.edit_client_national_id.setText('')
                 self.edit_book_id.setText('')             # Client id
-                self.client_name_search.setText('')
+                self.client_national_id_search.setText('')
                 self.statusBar().showMessage(f"Client deleted.")
+            self.display_all_clients()
         else:
             self.statusBar().showMessage(f"Deleting client aborted")
 
@@ -554,7 +598,6 @@ def app_main():
     app = QApplication(sys.argv)
     # Force the style to be the same on all OSs:
     app.setStyle("Fusion")
-
     window = MainApp()
     window.show()
     app.exec()
