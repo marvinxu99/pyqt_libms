@@ -148,8 +148,13 @@ class MainApp(QMainWindow):
     def display_all_books(self):
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
-            sql = """SELECT name, description, code, category_id, author_id, publisher_id, price 
-                    FROM book ORDER BY name"""
+            sql = """ SELECT b.code, b.name, b.description, c.name, a.name, p.name, b.price
+                FROM book AS b
+                INNER JOIN category AS c ON c.id = b.category_id
+                INNER JOIN author AS a ON a.id = b.author_id 
+                INNER JOIN publisher AS p ON p.id = b.publisher_id
+                ORDER BY b.name
+            """ 
             cur.execute(sql)
             books = cur.fetchall()
 
@@ -167,18 +172,18 @@ class MainApp(QMainWindow):
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
 
-            title       = self.new_book_title.text()
-            description = self.new_book_description.toPlainText()
-            code        = self.new_book_code.text()
-            category    = self.new_book_category.currentIndex()
-            author      = self.new_book_author.currentIndex()
-            publisher   = self.new_book_publisher.currentIndex()
-            price       = self.new_book_price.text()
+            title           = self.new_book_title.text()
+            description     = self.new_book_description.toPlainText()
+            code            = self.new_book_code.text()
+            category_id     = self._categories[self.new_book_category.currentText()]
+            author_id       = self._authors[self.new_book_author.currentText()]
+            publisher_id    = self._publishers[self.new_book_publisher.currentText()]
+            price           = self.new_book_price.text()
 
             cur.execute("""
                 INSERT INTO book (name, description, code, category_id, author_id, publisher_id, price)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """, (title, description, code, category, author, publisher, price))
+            """, (title, description, code, category_id, author_id, publisher_id, price))
             db_conn.commit()
 
             self.statusBar().showMessage("New book added.")
@@ -198,17 +203,24 @@ class MainApp(QMainWindow):
 
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
-            sql = "SELECT book_id, name, description, code, category_id, author_id, publisher_id, price FROM book where name= %s"
+            sql = """ SELECT b.book_id, b.name, b.description, b.code, c.name, a.name, p.name, b.price
+                FROM book AS b
+                INNER JOIN category AS c ON c.id = b.category_id
+                INNER JOIN author AS a ON a.id = b.author_id 
+                INNER JOIN publisher AS p ON p.id = b.publisher_id
+                WHERE b.name=%s
+                ORDER BY b.name
+            """ 
             cur.execute(sql, [(book_title)])
             data = cur.fetchone()
-            # print("found: ", data)
+            print("found: ", data)
             if data:
                 self.edit_book_title.setText(data[1])
                 self.edit_book_description.setText(data[2])
                 self.edit_book_code.setText(data[3])
-                self.edit_book_category.setCurrentIndex(data[4])
-                self.edit_book_author.setCurrentIndex(data[5])
-                self.edit_book_publisher.setCurrentIndex(data[6])
+                self.edit_book_category.setCurrentText(data[4])
+                self.edit_book_author.setCurrentText(data[5])
+                self.edit_book_publisher.setCurrentText(data[6])
                 self.edit_book_price.setText(str(data[7]))
                 self.edit_book_id.setText(str(data[0]))             # Book id
                 self.statusBar().showMessage(f"Book found.")
@@ -219,18 +231,18 @@ class MainApp(QMainWindow):
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
 
-            title = self.edit_book_title.text()
-            decription = self.edit_book_description.toPlainText()
-            code = self.edit_book_code.text()
-            category = self.edit_book_category.currentIndex()
-            author = self.edit_book_author.currentIndex()
-            publisher = self.edit_book_publisher.currentIndex()
-            price = self.edit_book_price.text()
-            book_id = self.edit_book_id.text()
+            title           = self.edit_book_title.text()
+            decription      = self.edit_book_description.toPlainText()
+            code            = self.edit_book_code.text()
+            category_id     = self._categories[self.edit_book_category.currentText()]
+            author_id       = self._authors[self.edit_book_author.currentText()]
+            publisher_id    = self._publishers[self.edit_book_publisher.currentText()]
+            price           = self.edit_book_price.text()
+            book_id         = self.edit_book_id.text()
 
             sql = """UPDATE book SET name=%s, description=%s, code=%s, category_id=%s, author_id=%s, publisher_id=%s, price=%s
                 WHERE book_id=%s"""
-            cur.execute(sql, (title, decription, code, category, author, publisher, price, book_id))
+            cur.execute(sql, (title, decription, code, category_id, author_id, publisher_id, price, book_id))
             db_conn.commit()
 
             self.edit_book_title.setText('')
@@ -547,28 +559,34 @@ class MainApp(QMainWindow):
             cur = db_conn.cursor()
 
             # Categories
-            cur.execute("SELECT name FROM category")
+            cur.execute("SELECT id, name FROM category ORDER BY name")
             data = cur.fetchall()
             self.new_book_category.clear()
+            self._categories = {}
             for category in data:
-                self.new_book_category.addItem(category[0])
-                self.edit_book_category.addItem(category[0])
+                self.new_book_category.addItem(category[1])
+                self.edit_book_category.addItem(category[1])
+                self._categories[category[1]] = category[0]
 
             # Authors
-            cur.execute("SELECT name FROM author")
+            cur.execute("SELECT id, name FROM author ORDER BY name")
             data = cur.fetchall()
             self.new_book_author.clear()
+            self._authors = {}
             for author in data:
-                self.new_book_author.addItem(author[0])
-                self.edit_book_author.addItem(author[0])
+                self.new_book_author.addItem(author[1])
+                self.edit_book_author.addItem(author[1])
+                self._authors[author[1]] = author[0]
 
             # Publishers
-            cur.execute("SELECT name FROM publisher")
+            cur.execute("SELECT id, name FROM publisher ORDER BY name")
             data = cur.fetchall()
             self.new_book_publisher.clear()
+            self._publishers = {}
             for publisher in data:
-                self.new_book_publisher.addItem(publisher[0])
-                self.edit_book_publisher.addItem(publisher[0])
+                self.new_book_publisher.addItem(publisher[1])
+                self.edit_book_publisher.addItem(publisher[1])
+                self._publishers[publisher[1]] = publisher[0]
 
     ###############################################
     ## Themes
