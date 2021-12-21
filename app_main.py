@@ -26,17 +26,17 @@ class MainApp(QMainWindow):
 
         self.show_themes(False)
 
-        tbl_header_style = "::section { background-color: #efeeea; }"
-        self.table_categories.horizontalHeader().setStyleSheet(tbl_header_style)
-        self.table_authors.horizontalHeader().setStyleSheet(tbl_header_style)
-        self.table_publishers.horizontalHeader().setStyleSheet(tbl_header_style)
+        # tbl_header_style = "::section { background-color: #efeeea; }"
+        # self.table_categories.horizontalHeader().setStyleSheet(tbl_header_style)
+        # self.table_authors.horizontalHeader().setStyleSheet(tbl_header_style)
+        # self.table_publishers.horizontalHeader().setStyleSheet(tbl_header_style)
 
         self.table_categories.verticalHeader().setVisible(True)
-        self.table_categories.verticalHeader().setStyleSheet(tbl_header_style)
+        # self.table_categories.verticalHeader().setStyleSheet(tbl_header_style)
         self.table_authors.verticalHeader().setVisible(True)
-        self.table_authors.verticalHeader().setStyleSheet(tbl_header_style)
+        # self.table_authors.verticalHeader().setStyleSheet(tbl_header_style)
         self.table_publishers.verticalHeader().setVisible(True)
-        self.table_publishers.verticalHeader().setStyleSheet(tbl_header_style)
+        # self.table_publishers.verticalHeader().setStyleSheet(tbl_header_style)
 
     def handle_buttons(self):
 
@@ -103,7 +103,7 @@ class MainApp(QMainWindow):
             self.themes_box.hide()
 
     def switch_theme(self, theme='light'):
-        """Switch to a different theme"""
+        """Switch to the selected theme"""
         if theme == 'light':
             print('light theme')
             self.setStyleSheet("")
