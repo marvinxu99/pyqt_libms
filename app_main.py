@@ -25,6 +25,7 @@ class MainApp(QMainWindow):
         self.setStyleSheet("QStatusBar{border-top: 1px outset grey;}");
 
         self.show_themes(False)
+        # self.set_theme(theme='darkgray')
 
         # tbl_header_style = "::section { background-color: #efeeea; }"
         # self.table_categories.horizontalHeader().setStyleSheet(tbl_header_style)
@@ -43,16 +44,17 @@ class MainApp(QMainWindow):
         # Main tabs
         self.btn_daily_operations.clicked.connect(self.open_daily_operations_tab)
         self.btn_books.clicked.connect(self.open_books_tab)
+        self.btn_clients.clicked.connect(self.open_clients_tab)
         self.btn_users.clicked.connect(self.open_users_tab)
         self.btn_settings.clicked.connect(self.open_settings_tab)
 
         # Themes
         self.btn_show_themes.clicked.connect(lambda: self.show_themes(True))
         self.btn_hide_themes.clicked.connect(lambda: self.show_themes(False))
-        self.btn_theme_light.clicked.connect(lambda: self.switch_theme(theme='light'))
-        self.btn_theme_darkgray.clicked.connect(lambda: self.switch_theme(theme='darkgray'))
-        self.btn_theme_darkblue.clicked.connect(lambda: self.switch_theme(theme='darkblue'))
-        self.btn_theme_darkorange.clicked.connect(lambda: self.switch_theme(theme='darkorange'))
+        self.btn_theme_light.clicked.connect(lambda: self.set_theme(theme='light'))
+        self.btn_theme_darkgray.clicked.connect(lambda: self.set_theme(theme='darkgray'))
+        self.btn_theme_darkblue.clicked.connect(lambda: self.set_theme(theme='darkblue'))
+        self.btn_theme_darkorange.clicked.connect(lambda: self.set_theme(theme='darkorange'))
 
         # Books
         self.btn_add_new_book.clicked.connect(self.add_new_book)
@@ -92,43 +94,27 @@ class MainApp(QMainWindow):
         return db
 
     ###############################################
-    ## Themes
-    ###############################################
-    def show_themes(self, show_flag=True):
-        """Display all available theme choices"""
-        self.btn_hide_themes.resize(QSize(20, 40));
-        if show_flag:
-            self.themes_box.show()
-        else:
-            self.themes_box.hide()
-
-    def switch_theme(self, theme='light'):
-        """Switch to the selected theme"""
-        if theme == 'light':
-            print('light theme')
-            self.setStyleSheet("")
-        else:
-            style_qss = f"themes/{theme}.qss"
-            print(style_qss)
-            with open(style_qss) as f_style:
-                style = f_style.read()
-                self.setStyleSheet(style)
-
-    ###############################################
     ## Open Tabs
     ###############################################
     def open_daily_operations_tab(self):
-        self.main_tab_widget.setCurrentIndex(0)
+        # self.main_tab_widget.setCurrentIndex(0)
+        self.main_tab_widget.setCurrentWidget(self.tab_daily_operations)
 
     def open_books_tab(self):
-        self.main_tab_widget.setCurrentIndex(1)
+        self.main_tab_widget.setCurrentWidget(self.tab_books)
         self.get_items_book_combobox()
 
+    def open_clients_tab(self):
+        # self.main_tab_widget.setCurrentIndex(3)
+        self.main_tab_widget.setCurrentWidget(self.tab_clients)
+
     def open_users_tab(self):
-        self.main_tab_widget.setCurrentIndex(2)
+        # self.main_tab_widget.setCurrentIndex(2)
+        self.main_tab_widget.setCurrentWidget(self.tab_users) 
 
     def open_settings_tab(self):
-        self.main_tab_widget.setCurrentIndex(3)
+        # self.main_tab_widget.setCurrentIndex(3)
+        self.main_tab_widget.setCurrentWidget(self.tab_settings)
         self.display_categories()
         self.display_authors()
         self.display_publishers()
@@ -192,7 +178,6 @@ class MainApp(QMainWindow):
             else:
                 self.statusBar().showMessage(f"Book NOT found.")
 
-
     def edit_book_save(self):
         with MySQLdb.connect(**self._DB) as db_conn:
             cur = db_conn.cursor()
@@ -251,7 +236,6 @@ class MainApp(QMainWindow):
                 self.statusBar().showMessage(f"Book deleted.")
         else:
             self.statusBar().showMessage(f"Deleting book aborted")
-
 
     ###############################################
     ## Users
@@ -324,7 +308,7 @@ class MainApp(QMainWindow):
                 self.statusBar().showMessage("User updated.")
                 self.edit_user_groupbox.setEnabled(False)
         else:
-            self.new_user_password_warning.setText("Passwords are incorrect!")
+            self.statusBar().showMessage("Passwords are incorrect.")
 
 
     ###############################################
@@ -445,6 +429,29 @@ class MainApp(QMainWindow):
             for publisher in data:
                 self.new_book_publisher.addItem(publisher[0])
                 self.edit_book_publisher.addItem(publisher[0])
+
+    ###############################################
+    ## Themes
+    ###############################################
+    def show_themes(self, show_flag=True):
+        """Display all available theme choices"""
+        self.btn_hide_themes.resize(QSize(20, 40));
+        if show_flag:
+            self.themes_box.show()
+        else:
+            self.themes_box.hide()
+
+    def set_theme(self, theme='light'):
+        """set to the selected theme"""
+        if theme == 'light':
+            print('light theme')
+            self.setStyleSheet("")
+        else:
+            style_qss = f"themes/{theme}.qss"
+            print(style_qss)
+            with open(style_qss) as f_style:
+                style = f_style.read()
+                self.setStyleSheet(style)
 
 
 def app_main():
