@@ -1,0 +1,6 @@
+(1) Install MySQL server on client machine
+
+(2) extract our DB
+
+(3) convert to exe
+

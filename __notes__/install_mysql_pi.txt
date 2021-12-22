@@ -1,0 +1,53 @@
+# https://pimylifeup.com/raspberry-pi-mysql/
+
+Install MySQL in Raspberry Pi:
+==============================
+(1) Keep system up to date
+- sudo apt update
+- sudo apt upgrade
+
+(2) Installing MySQL to the Raspberry Pi is a simple process and can be done with the following command.
+- sudo apt install mariadb-server  (replacement of mysql-server)
+
+(3) With the MySQL server software installed to the Raspberry Pi, we will now need to secure it by 
+setting a password for the “root” user.  
+
+By default, MySQL is installed without any password set up meaning you can access the MySQL server without any authentication.
+
+- sudo mysql_secure_installation
+
+(4) Now if you want to access your Raspberry Pi’s MySQL server and start making changes to your databases, 
+you can enter the following command.
+
+- sudo mysql -u root -p
+
+
+Configure server for remote access:
+===================================
+To enable MariaDB to listen to remote connections, you need to edit your defaults file. 
+- find out the default file:
+
+
+Configure UFW to allow 3306/tcp:
+=======================================
+- sudo ufw allow 3306/tcp
+
+- sudo ufw status
+
+
+Creating a User and grant remote access:
+========================================
+(1) Log in as root (if first time)
+- sudo mysql -u root -p
+
+view existing users:
+SELECT User, Host FROM mysql.user ;
+
+(2) Create user winter/winter
+CREATE USER 'winter' IDENTIFIED BY 'xxxxx';
+CREATE USER 'marvin' IDENTIFIED BY 'xxxxx';
+
+(3) create a user that can connect from anywhere on my local area network (LAN),  
+GRANT ALL PRIVILEGES ON *.* TO 'winter'@'192.168.0.%' 
+  IDENTIFIED BY 'my-new-password' WITH GRANT OPTION;
+
