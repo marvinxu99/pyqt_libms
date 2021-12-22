@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>973</width>
-    <height>576</height>
+    <width>987</width>
+    <height>583</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -155,9 +155,9 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>40</y>
-      <width>771</width>
-      <height>521</height>
+      <y>0</y>
+      <width>801</width>
+      <height>541</height>
      </rect>
     </property>
     <property name="font">
@@ -179,8 +179,8 @@
        <rect>
         <x>9</x>
         <y>150</y>
-        <width>751</width>
-        <height>311</height>
+        <width>791</width>
+        <height>321</height>
        </rect>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
@@ -378,13 +378,36 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>120</y>
+        <y>110</y>
         <width>691</width>
         <height>16</height>
        </rect>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_daily_ops_export">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>480</y>
+        <width>161</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 9pt &quot;Segoe UI&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Export to Excel File</string>
       </property>
      </widget>
     </widget>
@@ -397,8 +420,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>701</width>
-        <height>481</height>
+        <width>811</width>
+        <height>501</height>
        </rect>
       </property>
       <property name="currentIndex">
@@ -414,7 +437,7 @@
           <x>10</x>
           <y>20</y>
           <width>761</width>
-          <height>421</height>
+          <height>391</height>
          </rect>
         </property>
         <column>
@@ -452,6 +475,29 @@
           <string>Price</string>
          </property>
         </column>
+       </widget>
+       <widget class="QPushButton" name="btn_all_books_export">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>430</y>
+          <width>161</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Segoe UI&quot;;</string>
+        </property>
+        <property name="text">
+         <string>Export Books to Excel File</string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="AddNewBook">
@@ -960,11 +1006,11 @@
         <x>0</x>
         <y>0</y>
         <width>701</width>
-        <height>481</height>
+        <height>501</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_all_clients">
        <attribute name="title">
@@ -976,7 +1022,7 @@
           <x>10</x>
           <y>20</y>
           <width>681</width>
-          <height>421</height>
+          <height>391</height>
          </rect>
         </property>
         <attribute name="horizontalHeaderMinimumSectionSize">
@@ -1003,6 +1049,29 @@
           <string>National ID</string>
          </property>
         </column>
+       </widget>
+       <widget class="QPushButton" name="btn_all_clients_export">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>420</y>
+          <width>161</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 9pt &quot;Segoe UI&quot;;</string>
+        </property>
+        <property name="text">
+         <string>Export Clients to Excel File</string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="AddNewBook_3">
@@ -1952,7 +2021,7 @@
       <x>780</x>
       <y>-1</y>
       <width>181</width>
-      <height>551</height>
+      <height>541</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -2087,7 +2156,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>973</width>
+     <width>987</width>
      <height>22</height>
     </rect>
    </property>
