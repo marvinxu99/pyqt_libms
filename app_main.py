@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.uic.load_ui import loadUi, loadUiType
 from datetime import datetime, date, timedelta
 import MySQLdb
+import bcrypt
 
 from utils import read_db_config
 
@@ -34,10 +35,10 @@ class Login(QWidget, login_ui):
             with MySQLdb.connect(**self._DB) as db_conn:
                 cur = db_conn.cursor()
 
-                sql = "SELECT user_id, name, email, password FROM user WHERE name=%s and password=%s"
-                cur.execute(sql, (username, password))
+                sql = "SELECT user_id, username, email, password FROM user WHERE username=%s"
+                cur.execute(sql, (username,))
                 data = cur.fetchone()
-                if data:
+                if data and bcrypt.checkpw(password.encode('utf-8'), data[3].encode('utf-8')):
                     self.window2 = MainApp()
                     self.close()
                     self.window2.show()
@@ -111,7 +112,7 @@ class MainApp(QMainWindow):
 
         # Users
         self.btn_add_user.clicked.connect(self.add_new_user)
-        self.btn_user_login.clicked.connect(self.user_login)
+        self.btn_user_login.clicked.connect(self.edit_user_login)
         self.btn_update_user_data.clicked.connect(self.update_user_data)
 
         # Settings
@@ -468,17 +469,19 @@ class MainApp(QMainWindow):
             with MySQLdb.connect(**self._DB) as db_conn:
                 cur = db_conn.cursor()
 
-                name = self.new_user_name.text()
+                username = self.new_user_name.text()
                 email = self.new_user_email.text()
-                sql = "INSERT INTO user (name, email, password) VALUES(%s, %s, %s)"
-                cur.execute(sql, (name, email, password))
+                hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+                sql = "INSERT INTO user (username, email, password) VALUES(%s, %s, %s)"
+                cur.execute(sql, (username, email, hashed_pw))
                 db_conn.commit()
     
                 self.statusBar().showMessage(f"New user added.")
         else:
             self.new_user_password_warning.setText("Passwords are incorrect!")
 
-    def user_login(self):
+    def edit_user_login(self):
         user_name = self.login_user_name.text()
         password = self.login_user_password.text()
 
@@ -486,15 +489,14 @@ class MainApp(QMainWindow):
             with MySQLdb.connect(**self._DB) as db_conn:
                 cur = db_conn.cursor()
 
-                sql = "SELECT user_id, name, email, password FROM user WHERE name=%s and password=%s"
-                cur.execute(sql, (user_name, password))
+                sql = "SELECT user_id, username, email, password FROM user WHERE username=%s"
+                cur.execute(sql, (user_name,))
                 data = cur.fetchone()
 
-                if data:
+                if data and bcrypt.checkpw(password.encode('utf-8'), data[3].encode('utf-8')):
                     self.edit_user_id = data[0]
                     self.edit_user_name.setText(data[1])
                     self.edit_user_email.setText(data[2])
-                    self.edit_user_password.setText(data[3])
 
                     self.login_user_name.setText('')
                     self.login_user_password.setText('')
@@ -505,20 +507,36 @@ class MainApp(QMainWindow):
                     self.statusBar().showMessage("Invalid user name and/or password.")
 
     def update_user_data(self):
-        print("edit user data")
-
+        username = self.edit_user_name.text()
+        email = self.edit_user_email.text()
         password = self.edit_user_password.text()
         password2 = self.edit_user_password2.text()
 
-        if password and password == password2:
+        if password or password2:  
+            if password == password2:
+                with MySQLdb.connect(**self._DB) as db_conn:
+                    cur = db_conn.cursor()
+
+                    hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+                    sql = "UPDATE user SET username=%s, email=%s, password=%s WHERE user_id=%s"
+                    cur.execute(sql, (username, email, hashed_pw, self.edit_user_id))
+                    db_conn.commit()
+
+                    self.edit_user_name.setText('')
+                    self.edit_user_email.setText('')
+                    self.edit_user_password.setText('')
+                    self.edit_user_password2.setText('')
+                    self.statusBar().showMessage("User updated.")
+                    self.edit_user_groupbox.setEnabled(False)
+            else:
+                self.statusBar().showMessage("Passwords are incorrect.")
+        else:
             with MySQLdb.connect(**self._DB) as db_conn:
                 cur = db_conn.cursor()
 
-                name = self.edit_user_name.text()
-                email = self.edit_user_email.text()
-
-                sql = "UPDATE user SET name=%s, email=%s, password=%s WHERE user_id=%s"
-                cur.execute(sql, (name, email, password, self.edit_user_id))
+                sql = "UPDATE user SET username=%s, email=%s WHERE user_id=%s"
+                cur.execute(sql, (username, email, self.edit_user_id))
                 db_conn.commit()
 
                 self.edit_user_name.setText('')
@@ -527,9 +545,6 @@ class MainApp(QMainWindow):
                 self.edit_user_password2.setText('')
                 self.statusBar().showMessage("User updated.")
                 self.edit_user_groupbox.setEnabled(False)
-        else:
-            self.statusBar().showMessage("Passwords are incorrect.")
-
 
     ###############################################
     ## Settings

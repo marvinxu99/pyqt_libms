@@ -3,3 +3,5 @@
 
 (2) To install MySQLdb: 
      pip install mysqlclient
+
+(3) pip install bcrypt   (-3.2.0)
