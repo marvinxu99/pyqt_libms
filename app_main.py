@@ -15,16 +15,25 @@ from fpdf import FPDF
 from utils import read_db_config
 
 
-login_ui, _ = loadUiType("login.ui")
-
-class Login(QWidget, login_ui):
+# login_ui, _ = loadUiType("login.ui")
+# class Login(QWidget, login_ui):
+class Login(QWidget):
     """Login UI"""
     def __init__(self):
         super().__init__()
-        self.setupUi(self)
+        # self.setupUi(self)
+        loadUi("login.ui", self)
+        self.setWindowTitle("User Login")
 
-        self._DB = read_db_config()     # Read the DB settings
+        # Set stylesheet
+        with open("themes/darkblue.qss") as f_style:
+            style = f_style.read()
+            self.setStyleSheet(style)
 
+        # Read the DB settings
+        self._DB = read_db_config()  
+
+        # Signals
         self.btn_login_from_login.clicked.connect(self.handle_login)
         self.login_form_username.textChanged.connect(self.hide_error_message)
         self.login_form_password.textChanged.connect(self.hide_error_message)
@@ -692,7 +701,6 @@ class MainApp(QMainWindow):
             self.setStyleSheet("")
         else:
             style_qss = f"themes/{theme}.qss"
-            print(style_qss)
             with open(style_qss) as f_style:
                 style = f_style.read()
                 self.setStyleSheet(style)
@@ -736,7 +744,7 @@ class MainApp(QMainWindow):
                 
                 workbook.close()
 
-                self.statusBar().showMessage("Daily operations exported.")
+                self.statusBar().showMessage("Daily operations exported successfully.")
             else:
                 self.statusBar().showMessage("No daily operation found.")
 
@@ -767,7 +775,7 @@ class MainApp(QMainWindow):
                         for column in book:
                             book_row.append(str(column))
                         csvwriter.writerow(book_row)
-                self.statusBar().showMessage("Books exported.")
+                self.statusBar().showMessage("Books exported successfully.")
             else:
                 self.statusBar().showMessage("No books found.")
 
@@ -801,7 +809,7 @@ class MainApp(QMainWindow):
                     pdf.ln(line_height)
 
                 pdf.output("export_all_clients.pdf")
-                self.statusBar().showMessage("Clients exported.")
+                self.statusBar().showMessage("Clients exported successfully.")
             else:
                 self.statusBar().showMessage("No client found.")
 
