@@ -247,6 +247,9 @@
         <height>31</height>
        </rect>
       </property>
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
       <item>
        <property name="text">
         <string>Return</string>
@@ -266,6 +269,9 @@
         <width>68</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="currentIndex">
+       <number>-1</number>
       </property>
       <item>
        <property name="text">

@@ -5,8 +5,47 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.uic.load_ui import loadUi, loadUiType
 from datetime import datetime, date, timedelta
-
 import MySQLdb
+
+from utils import read_db_config
+
+
+login_ui, _ = loadUiType("login.ui")
+
+
+class Login(QWidget, login_ui):
+    """Login UI"""
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+        self._DB = read_db_config()     # Read the DB settings
+
+        self.btn_login_from_login.clicked.connect(self.handle_login)
+        self.login_form_username.textChanged.connect(self.hide_error_message)
+        self.login_form_password.textChanged.connect(self.hide_error_message)
+
+    def handle_login(self):
+        """Login handler"""
+        username = self.login_form_username.text()
+        password = self.login_form_password.text()
+
+        if username and password:
+            with MySQLdb.connect(**self._DB) as db_conn:
+                cur = db_conn.cursor()
+
+                sql = "SELECT user_id, name, email, password FROM user WHERE name=%s and password=%s"
+                cur.execute(sql, (username, password))
+                data = cur.fetchone()
+                if data:
+                    self.window2 = MainApp()
+                    self.close()
+                    self.window2.show()
+                else:
+                    self.login_error_message.setText("Incorrect username and/or password.")
+
+    def hide_error_message(self):
+        self.login_error_message.setText('')
 
 
 class MainApp(QMainWindow):
@@ -16,7 +55,7 @@ class MainApp(QMainWindow):
         loadUi("library.ui", self)
         self.setWindowTitle("Library Management System")
 
-        self._DB = self.read_db_config()
+        self._DB = read_db_config()
 
         self.handle_UI_changes()
         self.handle_buttons()
@@ -88,27 +127,6 @@ class MainApp(QMainWindow):
         self.btn_theme_darkblue.clicked.connect(lambda: self.set_theme(theme='darkblue'))
         self.btn_theme_darkorange.clicked.connect(lambda: self.set_theme(theme='darkorange'))
 
-    def read_db_config(self, filename='.env', section='mysql'):
-        """ Read database configuration file and return a dictionary object
-        :param filename: name of the configuration file
-        :param section: section of database configuration
-        :return: a dictionary of database parameters
-        """
-        # create parser and read ini configuration file
-        parser = ConfigParser()
-        parser.read(filename)
-
-        # get section, default to mysql
-        db = {}
-        if parser.has_section(section):
-            items = parser.items(section)
-            for item in items:
-                db[item[0]] = item[1]
-        else:
-            raise Exception('{0} not found in the {1} file'.format(section, filename))
-
-        return db
-
     ###############################################
     ## Open Tabs
     ###############################################
@@ -160,7 +178,7 @@ class MainApp(QMainWindow):
                 self.daily_ops_book_title.setText('')
                 self.daily_ops_client_name.setText('')
                 self.daily_ops_type.setCurrentIndex(-1)
-                self.daily_ops_type.setCurrentIndex(-1)
+                self.daily_ops_days.setCurrentIndex(-1)
                 self.statusBar().showMessage("New daily operation added.")
                 self.show_daily_operations()
 
@@ -666,7 +684,8 @@ def app_main():
     app = QApplication(sys.argv)
     # Force the style to be the same on all OSs:
     app.setStyle("Fusion")
-    window = MainApp()
+    # window = MainApp()
+    window = Login()
     window.show()
     app.exec()
 

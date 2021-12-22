@@ -646,6 +646,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.main_tab_widget.setCurrentIndex(5)
+        self.daily_ops_type.setCurrentIndex(-1)
+        self.daily_ops_days.setCurrentIndex(-1)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_6.setCurrentIndex(2)
         self.tabWidget_3.setCurrentIndex(0)
