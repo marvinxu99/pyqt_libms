@@ -4,6 +4,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.uic.load_ui import loadUi, loadUiType
+from datetime import datetime, date, timedelta
 
 import MySQLdb
 
@@ -47,7 +48,6 @@ class MainApp(QMainWindow):
 
 
     def handle_buttons(self):
-
         # Main tabs
         self.btn_daily_operations.clicked.connect(self.open_daily_operations_tab)
         self.btn_books.clicked.connect(self.open_books_tab)
@@ -56,7 +56,7 @@ class MainApp(QMainWindow):
         self.btn_settings.clicked.connect(self.open_settings_tab)
 
         # Day to day operations
-
+        self.btn_daily_operations_add.clicked.connect(self.daily_operations_add)
 
         # Books
         self.btn_add_new_book.clicked.connect(self.add_new_book)
@@ -115,6 +115,7 @@ class MainApp(QMainWindow):
     def open_daily_operations_tab(self):
         # self.main_tab_widget.setCurrentIndex(0)
         self.main_tab_widget.setCurrentWidget(self.tab_daily_operations)
+        self.show_daily_operations()
 
     def open_books_tab(self):
         self.main_tab_widget.setCurrentWidget(self.tab_books)
@@ -140,6 +141,55 @@ class MainApp(QMainWindow):
     ###############################################
     ## Dat to Day Operations
     ###############################################
+    def daily_operations_add(self):
+        book_title  = self.daily_ops_book_title.text()
+        client_name  = self.daily_ops_client_name.text()
+        type        = self.daily_ops_type.currentText()
+        days        = self.daily_ops_days.currentText()
+        today        = datetime.today() 
+
+        if book_title and type and days:
+            with MySQLdb.connect(**self._DB) as db_conn:
+                cur = db_conn.cursor()
+                cur.execute("""
+                    INSERT INTO dailyoperations (book_name, client_name, type, days, transaction_date)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, (book_title, client_name, type, days, today))
+                db_conn.commit()
+
+                self.daily_ops_book_title.setText('')
+                self.daily_ops_client_name.setText('')
+                self.daily_ops_type.setCurrentIndex(-1)
+                self.daily_ops_type.setCurrentIndex(-1)
+                self.statusBar().showMessage("New daily operation added.")
+                self.show_daily_operations()
+
+    def show_daily_operations(self):
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+            sql = """SELECT book_name, client_name, type, transaction_date, days  
+                from dailyoperations 
+                ORDER BY transaction_date
+            """ 
+            cur.execute(sql)
+            operations = cur.fetchall()
+
+            if operations:
+                self.daily_ops_table.setRowCount(0)   # Clear up the table
+                for row, operation in enumerate(operations):
+                    row_pos = self.daily_ops_table.rowCount()
+                    self.daily_ops_table.insertRow(row_pos)
+                    for column, item in enumerate(operation):
+                        if column == 3:   # date - From
+                            from_str = item.strftime("%d-%m-%Y")
+                            self.daily_ops_table.setItem(row, column, QTableWidgetItem(from_str))
+                        elif column == 4:  # date - to
+                            to_str = (operation[3] + timedelta(days=int(item))).strftime("%d-%m-%Y")
+                            self.daily_ops_table.setItem(row, column, QTableWidgetItem(to_str))
+                        else:
+                            self.daily_ops_table.setItem(row, column, QTableWidgetItem(str(item)))
+            else:
+                self.statusBar().showMessage("No daily operations found.")
 
 
     ###############################################
