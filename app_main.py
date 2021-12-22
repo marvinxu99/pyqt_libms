@@ -8,6 +8,9 @@ from datetime import datetime, date, timedelta
 import MySQLdb
 import bcrypt
 import csv
+# import xlrd3 as xlrd
+import xlsxwriter
+from fpdf import FPDF 
 
 from utils import read_db_config
 
@@ -212,44 +215,6 @@ class MainApp(QMainWindow):
             else:
                 self.statusBar().showMessage("No daily operations found.")
 
-    def export_daily_operations(self):
-        """Export all daily operations to an Excel file"""
-        with MySQLdb.connect(**self._DB) as db_conn:
-            cur = db_conn.cursor()
-            sql = """SELECT book_name, client_name, type, transaction_date, days  
-                from dailyoperations 
-                ORDER BY transaction_date
-            """ 
-            cur.execute(sql)
-            daily_ops = cur.fetchall()
-
-            if daily_ops:
-                with open("export_daily_operations.csv", mode='w') as csvfile:
-                    csvwriter = csv.writer(csvfile, lineterminator="\n")
-                    
-                    # Header row
-                    csvwriter.writerow(["Book Name", "Client Name", "Type", "From", "To"])
-
-                    # Books
-                    for ops in daily_ops:
-                        ops_row = []
-
-                        for column, item in enumerate(ops):
-                            if column == 3:   # date - From
-                                from_str = item.strftime("%d-%m-%Y")
-                                ops_row.append(from_str)
-                            elif column == 4:  # date - to
-                                to_str = (ops[3] + timedelta(days=int(item))).strftime("%d-%m-%Y")
-                                ops_row.append(to_str)
-                            else:
-                                ops_row.append(str(item))
-
-                        csvwriter.writerow(ops_row)
-
-                self.statusBar().showMessage("Daily operations exported.")
-            else:
-                self.statusBar().showMessage("No daily operation found.")
-
     ###############################################
     ## Books
     ###############################################
@@ -395,36 +360,6 @@ class MainApp(QMainWindow):
         else:
             self.statusBar().showMessage(f"Deleting book aborted")
 
-    def export_all_books(self):
-        with MySQLdb.connect(**self._DB) as db_conn:
-            cur = db_conn.cursor()
-            sql = """ SELECT b.code, b.name, b.description, c.name, a.name, p.name, b.price
-                FROM book AS b
-                INNER JOIN category AS c ON c.id = b.category_id
-                INNER JOIN author AS a ON a.id = b.author_id 
-                INNER JOIN publisher AS p ON p.id = b.publisher_id
-                ORDER BY b.name
-            """ 
-            cur.execute(sql)
-            books = cur.fetchall()
-
-            if books:
-                with open("export_all_books.csv", mode='w') as csvfile:
-                    csvwriter = csv.writer(csvfile, lineterminator="\n")
-                    
-                    # Header row
-                    csvwriter.writerow(["Book Code", "Book Title", "Description", "Category", "Author", "Publisher", "Price"])
-
-                    # Books
-                    for book in books:
-                        book_row = []
-                        for column in book:
-                            book_row.append(str(column))
-                        csvwriter.writerow(book_row)
-                self.statusBar().showMessage("Books exported.")
-            else:
-                self.statusBar().showMessage("No books found.")
-
     ###############################################
     ## Clients
     ###############################################
@@ -526,31 +461,6 @@ class MainApp(QMainWindow):
             self.display_all_clients()
         else:
             self.statusBar().showMessage(f"Deleting client aborted")
-
-    def export_all_clients(self):
-        """Export all clients to an Excel file"""
-        with MySQLdb.connect(**self._DB) as db_conn:
-            cur = db_conn.cursor()
-            sql = "SELECT name, email, national_id FROM client ORDER BY name"
-            cur.execute(sql)
-            clients = cur.fetchall()
-
-            if clients:
-                with open("export_all_clients.csv", mode='w') as csvfile:
-                    csvwriter = csv.writer(csvfile, lineterminator="\n")
-                    
-                    # Header row
-                    csvwriter.writerow(["Client Name", "Client Email", "National ID"])
-
-                    # Books
-                    for client in clients:
-                        client_row = []
-                        for column in client:
-                            client_row.append(str(column))
-                        csvwriter.writerow(client_row)
-                self.statusBar().showMessage("Clients exported.")
-            else:
-                self.statusBar().showMessage("No client found.")
 
     ###############################################
     ## Users
@@ -786,6 +696,115 @@ class MainApp(QMainWindow):
             with open(style_qss) as f_style:
                 style = f_style.read()
                 self.setStyleSheet(style)
+
+    ###############################################
+    ## Exporting data
+    ###############################################
+    def export_daily_operations(self):
+        """Export all daily operations to an Excel file (.xlsx)"""
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+            sql = """SELECT book_name, client_name, type, transaction_date, days  
+                from dailyoperations 
+                ORDER BY transaction_date
+            """ 
+            cur.execute(sql)
+            daily_ops = cur.fetchall()
+
+            if daily_ops:
+                # Create an new Excel file and add a worksheet.
+                workbook = xlsxwriter.Workbook('export_daily_operations.xlsx')
+                sheet1 = workbook.add_worksheet()
+                  
+                # Header row
+                column_headers = ["Book Name", "Client Name", "Type", "From", "To"]
+                sheet1.write_row(0, 0, column_headers)
+
+                # Books
+                for row, ops in enumerate(daily_ops, start=1):
+                    ops_row = []
+                    for column, item in enumerate(ops):
+                        if column == 3:   # date - From
+                            from_str = item.strftime("%d-%m-%Y")
+                            ops_row.append(from_str)
+                        elif column == 4:  # date - to
+                            to_str = (ops[3] + timedelta(days=int(item))).strftime("%d-%m-%Y")
+                            ops_row.append(to_str)
+                        else:
+                            ops_row.append(str(item))
+                    sheet1.write_row(row, 0, ops_row)
+                
+                workbook.close()
+
+                self.statusBar().showMessage("Daily operations exported.")
+            else:
+                self.statusBar().showMessage("No daily operation found.")
+
+    def export_all_books(self):
+        """Export all books to a CSV file (.csv)"""
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+            sql = """ SELECT b.code, b.name, b.description, c.name, a.name, p.name, b.price
+                FROM book AS b
+                INNER JOIN category AS c ON c.id = b.category_id
+                INNER JOIN author AS a ON a.id = b.author_id 
+                INNER JOIN publisher AS p ON p.id = b.publisher_id
+                ORDER BY b.name
+            """ 
+            cur.execute(sql)
+            books = cur.fetchall()
+
+            if books:
+                with open("export_all_books.csv", mode='w') as csvfile:
+                    csvwriter = csv.writer(csvfile, lineterminator="\n")
+                    
+                    # Header row
+                    csvwriter.writerow(["Book Code", "Book Title", "Description", "Category", "Author", "Publisher", "Price"])
+
+                    # Books
+                    for book in books:
+                        book_row = []
+                        for column in book:
+                            book_row.append(str(column))
+                        csvwriter.writerow(book_row)
+                self.statusBar().showMessage("Books exported.")
+            else:
+                self.statusBar().showMessage("No books found.")
+
+    def export_all_clients(self):
+        """Export all clients to a PDF file (.pdf)"""
+        with MySQLdb.connect(**self._DB) as db_conn:
+            cur = db_conn.cursor()
+            sql = "SELECT name, email, national_id FROM client ORDER BY name"
+            cur.execute(sql)
+            clients = cur.fetchall()
+
+            if clients:
+                pdf = FPDF()
+                pdf.add_page()
+                pdf.set_author("Winter Wesley")
+                pdf.set_font('helvetica', size=11)
+                line_height = pdf.font_size * 2.5
+                col_width = pdf.epw / 4             # distribute content evenly
+                                    
+                # Header row
+                column_titles = ("Client Name", "Client Email", "National ID")
+                for title in column_titles:
+                    pdf.multi_cell(col_width, line_height, title, border=1, ln=3, max_line_height=pdf.font_size)
+                pdf.ln(line_height)
+
+                # Books
+                for client in clients:
+                    client_row = []
+                    for datum in client:
+                        pdf.multi_cell(col_width, line_height, str(datum), border=1, ln=3, max_line_height=pdf.font_size)
+                    pdf.ln(line_height)
+
+                pdf.output("export_all_clients.pdf")
+                self.statusBar().showMessage("Clients exported.")
+            else:
+                self.statusBar().showMessage("No client found.")
+
     ###############################################
     ## close Event
     def closeEvent(self, a0: QCloseEvent) -> None:

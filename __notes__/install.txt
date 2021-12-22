@@ -5,3 +5,9 @@
      pip install mysqlclient
 
 (3) pip install bcrypt   (-3.2.0)
+
+(4) pip install xlrd3    (1.1.0)
+
+(5) pip install XLsxWriter  (3.0.2)
+
+(6) pip install fpdf2   (2.4.6)
