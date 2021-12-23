@@ -22,11 +22,30 @@ you can enter the following command.
 - sudo mysql -u root -p
 
 
+Creating a User and grant remote access:
+========================================
+(1) Log in as root (if first time)
+- sudo mysql -u root -p
+
+view existing users:
+- SELECT User, Host FROM mysql.user ;
+
+(2) Create user winter/winter
+- CREATE USER 'winter' IDENTIFIED BY 'xxxxx';
+- CREATE USER 'marvin' IDENTIFIED BY 'xxxxx';
+
+(3) create a user that can connect from anywhere on my local area network (LAN),  
+- GRANT ALL PRIVILEGES ON *.* TO 'winter'@'192.168.0.%' 
+  IDENTIFIED BY 'my-new-password' WITH GRANT OPTION;
+
+- FLUSH PRIVILEGES;
+
 Configure server for remote access:
 ===================================
-To enable MariaDB to listen to remote connections, you need to edit your defaults file. 
-- find out the default file:
-
+To enable MariaDB to listen to remote connections, you need to edit the server config file. 
+- sudo vi /etc/mysql/mariadb.conf.d/50-server.cnf
+- comment out: 
+    # bind-address = 127.0.0.1
 
 Configure UFW to allow 3306/tcp:
 =======================================
@@ -34,20 +53,16 @@ Configure UFW to allow 3306/tcp:
 
 - sudo ufw status
 
+Restart/Stop MySQL:
+===================
+Start:  sudo /etc/init.d/mysql start
+Stop:  sudo /etc/init.d/mysql stop
 
-Creating a User and grant remote access:
-========================================
-(1) Log in as root (if first time)
-- sudo mysql -u root -p
+Restart / reload configs:
+    sudo /etc/init.d/mysql restart
 
-view existing users:
-SELECT User, Host FROM mysql.user ;
+Check run status:
+    sudo /etc/init.d/mysql status
 
-(2) Create user winter/winter
-CREATE USER 'winter' IDENTIFIED BY 'xxxxx';
-CREATE USER 'marvin' IDENTIFIED BY 'xxxxx';
-
-(3) create a user that can connect from anywhere on my local area network (LAN),  
-GRANT ALL PRIVILEGES ON *.* TO 'winter'@'192.168.0.%' 
-  IDENTIFIED BY 'my-new-password' WITH GRANT OPTION;
-
+systemctl stop mysql
+systemctl start mysql
